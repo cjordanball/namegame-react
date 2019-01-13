@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './styles/styles.less';
-import Root from './components/Root';
+import Container from './components/Container/container';
 
 ReactDOM.render(
-	<Root />, document.querySelector('#root')
+	<Container />, document.querySelector('#root')
 );
