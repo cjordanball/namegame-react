@@ -1,0 +1,10 @@
+@import "fonts";
+
+.namesGame {
+	color: gray;
+	font-family: Cormorant;
+	font-weight: normal;
+}
+body {
+	color: red;
+}

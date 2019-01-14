@@ -12,6 +12,14 @@ module.exports = {
 				}
 			},
 			{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				use: [
+					'babel-loader',
+					'eslint-loader'
+				]
+			},
+			{
 				test: /\.html$/,
 				use: [
 					{
@@ -25,31 +33,36 @@ module.exports = {
 					loader: 'style-loader'
 				},
 				{
-					loader: 'css-loader'
+					loader: 'css-loader',
+					options: {
+						sourceMap: true,
+						modules: true,
+						localIdentName: '[local]__[hash:base64:5]'
+					}
 				},
 				{
 					loader: 'less-loader'
 				}]
 			},
 			{
-                test: /\.(png|svg|jpg|gif|ico)$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: 'src/assets/images/[name].[ext]'
-                    }
-                }]
-            },
-            {
-                test: /\.ttf$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]',
-                        outputPath: 'src/assets/fonts/'
-                    }
-                }]
-            }
+				test: /\.(png|svg|jpg|gif|ico)$/,
+				use: [{
+					loader: 'file-loader',
+					options: {
+						name: 'src/assets/images/[name].[ext]'
+					}
+				}]
+			},
+			{
+				test: /\.ttf$/,
+				use: [{
+					loader: 'file-loader',
+					options: {
+						name: '[name].[ext]',
+						outputPath: 'src/assets/fonts/'
+					}
+				}]
+			}
 		]
 	},
 	plugins: [
