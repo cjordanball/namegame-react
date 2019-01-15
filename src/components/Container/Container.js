@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import EmployeeData from '../../testData/fullEmployeeData';
 import styles from './container.less';
 import ToolBar from '../Toolbar/toolbar';
@@ -48,14 +48,25 @@ class Container extends Component {
 		return resArray;
 	}
 
+	Howdy() {
+		return () => (
+			<h1>Hello!</h1>
+		);
+	}
+
 	render() {
 		console.log('render!', this.state);
 		return (
 			this.state.employees.length ? (
 				<div className={styles.container}>
-					<ToolBar />
-					<Heading />
-					<NamesGame employees={this.chooseEmployeeList()} />
+					<BrowserRouter>
+						<div>
+							<ToolBar />
+							<Heading />
+							<Route path="/" exact component={this.Howdy()} />
+							<Route path="/names" render={() => <NamesGame employees={this.chooseEmployeeList()} />} />
+						</div>
+					</BrowserRouter>
 					<ScoreKeeper />
 				</div>
 			) : null
