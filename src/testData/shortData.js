@@ -1,4 +1,4 @@
-{
+export default {
 	"people": [
 		{
             "id": "4NCJTL13UkK0qEIAAcg4IQ",
