@@ -11,6 +11,7 @@
                 "minProperties": 3
             }
         }],
+        "no-plusplus": "off",
         "indent": ["error", tab],
         "max-len": ["error", { "code": 160 }],
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
