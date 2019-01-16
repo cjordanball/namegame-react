@@ -1,77 +1,79 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import EmployeeData from '../../testData/fullEmployeeData';
 import styles from './container.less';
 import ToolBar from '../Toolbar/toolbar';
 import Heading from '../Heading/heading';
 import ScoreKeeper from '../ScoreKeeper/ScoreKeeper';
 import NamesGame from '../NamesGame/namesGame';
+import Intro from '../Intro/intro';
+import Farewell from '../Farewell/farewell';
 
 class Container extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			employees: [],
-			selectedEmployee: null
-		};
-	}
+	employeeList = [];
 
 	componentDidMount() {
-		console.log('ed: ', EmployeeData);
-		this.setState({
-			employees: EmployeeData.people,
-			author: 'CJB'
-		});
+		this.employeeList = EmployeeData.people;
+		const { getEmployees } = this.props;
+		getEmployees(this.employeeList);
+
 		// axios.get('https://willowtreeapps.com/api/v1.0/profiles/')
 		// 	.then((res) => {
 		// 		console.log(res.data);
 		// 	});
 	}
 
-	chooseEmployeeList() {
-		const { employees } = this.state;
-		const arrLength = employees.length;
-		const resArray = [];
-		while (resArray.length < 5) {
-			const newEntry = Math.floor(Math.random() * arrLength);
-			if (!resArray.includes(newEntry)
-				&& employees[newEntry].firstName
-				&& employees[newEntry].lastName
-				&& employees[newEntry].slug
-				&& employees[newEntry].headshot.alt !== 'Logo'
-				&& employees[newEntry].headshot.url
-				&& employees[newEntry].headshot.alt.slice(0, 6) !== 'Willow'
-			) {
-				resArray.push(employees[newEntry]);
-			}
-		}
-		return resArray;
-	}
-
-	Howdy() {
-		return () => (
-			<h1>Hello!</h1>
-		);
-	}
-
 	render() {
-		console.log('render!', this.state);
+		const { employeeList, path, isStarted, isComplete } = this.props;
 		return (
-			this.state.employees.length ? (
+			employeeList.length ? (
 				<div className={styles.container}>
 					<BrowserRouter>
 						<div>
-							<ToolBar />
+							<ToolBar isHome={path === 'home'} isStarted={isStarted} isComplete={isComplete} />
 							<Heading />
-							<Route path="/" exact component={this.Howdy()} />
-							<Route path="/names" render={() => <NamesGame employees={this.chooseEmployeeList()} />} />
+							<Route path="/" exact component={Intro} />
+							<Route path="/names" component={NamesGame} />
+							<Route path="/farewell" component={Farewell} />
 						</div>
 					</BrowserRouter>
-					<ScoreKeeper />
+					{(isStarted && !isComplete) ? <ScoreKeeper /> : null}
 				</div>
 			) : null
 		);
 	}
 }
 
-export default Container;
+Container.propTypes = {
+	getEmployees: PropTypes.func.isRequired,
+	employeeList: PropTypes.arrayOf(PropTypes.any).isRequired,
+	path: PropTypes.string.isRequired,
+	isStarted: PropTypes.bool.isRequired,
+	isComplete: PropTypes.bool.isRequired
+};
+
+const mapStateToProps = appState => (
+	{
+		employeeList: appState.employees,
+		path: appState.path,
+		isStarted: appState.isStarted,
+		isComplete: appState.isComplete
+	}
+);
+
+const mapDispatchToProps = dispatch => (
+	{
+		getEmployees: employeeList => dispatch({
+			type: 'FETCH_EMPLOYEES',
+			employeeList
+		}),
+		trackPath: path => dispatch({
+			type: 'TRACK_PATH',
+			path
+		})
+	}
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Container);

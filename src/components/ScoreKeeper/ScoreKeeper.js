@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styles from './ScoreKeeper.less';
+import ScoreSide from './ScoreSide/scoreside';
 
-const scoreKeeper = () => (
-	<div className={styles.scoreBox}>
-		<h1>Here is where the score goes!</h1>
-	</div>
+class ScoreKeeper extends Component {
+	render() {
+		return (
+			<div className={styles.scoreBox}>
+				<ScoreSide num={this.props.currentScore} heading="Current Score:" />
+				<ScoreSide num={this.props.gameScore} heading="Game Score:" />
+			</div>
+		);
+	}
+}
+
+const mapStateToProps = state => (
+	{
+		gameScore: state.scoreDataTotal,
+		currentScore: state.scoreDataCurrent
+	}
 );
-
-export default scoreKeeper;
+export default connect(mapStateToProps)(ScoreKeeper);

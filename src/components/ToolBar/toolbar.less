@@ -1,5 +1,38 @@
+@font-face {
+    font-family: LibreFranklin;
+    font-weight: normal;
+    src: url('/src/assets/fonts/Libre_Franklin/LibreFranklin-Medium.ttf');
+}
+
 .toolbar {
+	font: LibreFranklin;
 	width: 100%;
-	height: 100px;
-	background-color: gray;
+	border-radius: 10px 10px 10px 10px;
+	height: 50px;
+	background-color: navy;
+	color: white;
+}
+
+.toolbar .link {
+	font-family: LibreFranklin;
+	font-size: 14px;
+	color: white;
+}
+
+.toolbar .linkFade {
+	font-family: LibreFranklin;
+	font-size: 14px;
+	color: #777;	
+}
+
+li {
+	width: 200px;
+	display: inline-block;
+}
+
+ul {
+	margin: 0;
+	padding-top: 18px;
+	text-align: center;
+	list-style-type: none;
 }
